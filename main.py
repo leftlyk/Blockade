@@ -72,25 +72,30 @@ while running:
             running = False
 
         keys = pygame.key.get_pressed()
+        num_keys_pressed = sum(keys)
 
-        if keys[pygame.K_LEFT]:
-            move_cb('left', g2)
-        elif keys[pygame.K_RIGHT]:
-            move_cb('right', g2)
-        elif keys[pygame.K_UP]:
-            move_cb('up', g2)
-        elif keys[pygame.K_DOWN]:
-            move_cb('down', g2)
+        if num_keys_pressed == 1:
 
-        if event.type == pygame.KEYDOWN:
-            if keys[ord('a')]:
-                move_cb('left', g1)
-            elif keys[ord('d')]:
-                move_cb('right', g1)
-            elif keys[ord('w')]:
-                move_cb('up', g1)
-            elif keys[ord('s')]:
-                move_cb('down', g1)
+            if event.type == pygame.KEYDOWN:
+
+                if keys[pygame.K_LEFT]:
+                    move_cb('left', g2)
+                elif keys[pygame.K_RIGHT]:
+                    move_cb('right', g2)
+                elif keys[pygame.K_UP]:
+                    move_cb('up', g2)
+                elif keys[pygame.K_DOWN]:
+                    move_cb('down', g2)
+
+
+                elif keys[ord('a')]:
+                    move_cb('left', g1)
+                elif keys[ord('d')]:
+                    move_cb('right', g1)
+                elif keys[ord('w')]:
+                    move_cb('up', g1)
+                elif keys[ord('s')]:
+                    move_cb('down', g1)
 
         if check_win():
             end = time.time()
