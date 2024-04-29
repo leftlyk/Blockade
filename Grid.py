@@ -38,19 +38,20 @@ class Grid():
 
 
     def populate(self, group, array, colour_dict, screen, grid):
-        x = 10
-        y = 10
+        x = self.x + 10
+        y = self.y + 10
+        print("Grid position: ",x, y)
         for i in range(len(array)):
             for j in range(len(array[i])):
                 cb = ColourBlock(colour=colour_dict[array[i][j]], x=x, y=y, callback=on_click, screen=screen, grid=self)
                 group.add(cb)
                 grid[i][j] = cb
                 x += 100
-            x = 10
+            x = self.x + 10
             y += 100
     def update_positions(self):
-        x = 10
-        y = 10
+        x = self.x + 10
+        y = self.y + 10
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
                 if self.grid[i][j] is not None:
@@ -59,7 +60,7 @@ class Grid():
                     x += 100
                     continue
                 x += 100
-            x = 10
+            x = self.x + 10
             y += 100
 
     def shuffle_grid(self):

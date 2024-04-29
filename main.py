@@ -8,7 +8,8 @@ from SolutionGrid import SolutionGrid
 pygame.init()
 
 # Set the width and height of the screen (in pixels)
-WIDTH, HEIGHT = 800, 510
+#WIDTH, HEIGHT = 800, 510
+WIDTH, HEIGHT = 1500, 510
 
 # Set the number of rows and columns in the grid
 ROWS, COLS = 5, 5
@@ -33,8 +34,15 @@ g1.shuffle_grid()
 # Update the positions of the color blocks
 g1.update_positions()
 
+g2 = Grid(800, 0, screen, group)
+print("Grid:",g1.grid)
+# Shuffle the grid
+g2.shuffle_grid()
+# Update the positions of the color blocks
+g2.update_positions()
 
-s1 = SolutionGrid(0,0,screen,group)
+
+s1 = SolutionGrid(610,100,screen,group)
 s1.populate_solutions()
 solution_grid = s1.grid
 
@@ -64,14 +72,25 @@ while running:
             running = False
 
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_LEFT]:
-            move_cb('left', g1)
-        if keys[pygame.K_RIGHT]:
-            move_cb('right', g1)
-        if keys[pygame.K_UP]:
-            move_cb('up', g1)
-        if keys[pygame.K_DOWN]:
-            move_cb('down', g1)
+            move_cb('left', g2)
+        elif keys[pygame.K_RIGHT]:
+            move_cb('right', g2)
+        elif keys[pygame.K_UP]:
+            move_cb('up', g2)
+        elif keys[pygame.K_DOWN]:
+            move_cb('down', g2)
+
+        if event.type == pygame.KEYDOWN:
+            if keys[ord('a')]:
+                move_cb('left', g1)
+            elif keys[ord('d')]:
+                move_cb('right', g1)
+            elif keys[ord('w')]:
+                move_cb('up', g1)
+            elif keys[ord('s')]:
+                move_cb('down', g1)
 
         if check_win():
             end = time.time()

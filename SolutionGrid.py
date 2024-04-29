@@ -32,8 +32,8 @@ class SolutionGrid():
         self.screen = screen
         self.group = group
     def populate_solutions(self):
-        x = 700
-        y = 10
+        x = self.x
+        y = self.y
         list_choices = ['blue', 'green', 'red', 'white', 'yellow', 'orange']
         counts = {'blue': 0, 'green': 0, 'red': 0, 'white': 0, 'yellow': 0, 'orange': 0}
         for i in range(len(self.grid)):
@@ -46,5 +46,5 @@ class SolutionGrid():
                 self.group.add(scb)
                 self.grid[i][j] = scb
                 x += 30
-            x = 700
+            x = self.x
             y += 30
