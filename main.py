@@ -46,6 +46,17 @@ s1 = SolutionGrid(610,100,screen,group)
 s1.populate_solutions()
 solution_grid = s1.grid
 
+def draw_game_over_screen(time_elapsed):
+   screen.fill((30, 30, 30))
+   win_string = 'Game over, time to solve: ' + str(time_elapsed)
+   font = pygame.font.SysFont('Oxygen-Regular.ttf', 80)
+   title = font.render(win_string, True, (255, 255, 255))
+   restart_button = font.render('R - Restart', True, (255, 255, 255))
+   quit_button = font.render('Q - Quit', True, (255, 255, 255))
+   screen.blit(title, (WIDTH/2 - title.get_width()/2, HEIGHT/2 - title.get_height()/3))
+   screen.blit(restart_button, (WIDTH/2 - restart_button.get_width()/2, HEIGHT/1.9 + restart_button.get_height()))
+   screen.blit(quit_button, (WIDTH/2 - quit_button.get_width()/2, HEIGHT/2 + quit_button.get_height()/2))
+   pygame.display.update()
 
 def check_win():
     middle_grid = [row[1:4] for row in g1.grid[1:4]]
@@ -61,8 +72,9 @@ def check_win():
 
 # Main loop
 running = True
+won = False
 while running:
-    not_won = True
+
     events = pygame.event.get()
     # Check for events
     for event in events:
@@ -72,34 +84,39 @@ while running:
             running = False
 
         keys = pygame.key.get_pressed()
-        num_keys_pressed = sum(keys)
+        list_keys_arrows = [pygame.K_LEFT, pygame.K_RIGHT,
+                            pygame.K_UP, pygame.K_DOWN]
+        list_keys_wasd = [ord('a'), ord('d'),
+                          ord('w'), ord('s')]
+        num_pressed_wasd = [keys[i] for i in list_keys_wasd]
+        num_pressed_wasd = len([ i for i in num_pressed_wasd if i != False])
+        num_pressed_arrows = [keys[i] for i in list_keys_arrows]
+        num_pressed_arrows = len([i for i in num_pressed_arrows if i != False])
+        print(num_pressed_wasd)
 
-        if num_keys_pressed == 1:
+        if event.type == pygame.KEYDOWN and num_pressed_arrows == 1:
+            if keys[pygame.K_LEFT]:
+                move_cb('left', g2)
+            elif keys[pygame.K_RIGHT]:
+                move_cb('right', g2)
+            elif keys[pygame.K_UP]:
+                move_cb('up', g2)
+            elif keys[pygame.K_DOWN]:
+                move_cb('down', g2)
 
-            if event.type == pygame.KEYDOWN:
-
-                if keys[pygame.K_LEFT]:
-                    move_cb('left', g2)
-                elif keys[pygame.K_RIGHT]:
-                    move_cb('right', g2)
-                elif keys[pygame.K_UP]:
-                    move_cb('up', g2)
-                elif keys[pygame.K_DOWN]:
-                    move_cb('down', g2)
-
-
-                elif keys[ord('a')]:
-                    move_cb('left', g1)
-                elif keys[ord('d')]:
-                    move_cb('right', g1)
-                elif keys[ord('w')]:
-                    move_cb('up', g1)
-                elif keys[ord('s')]:
-                    move_cb('down', g1)
+        if event.type == pygame.KEYDOWN and num_pressed_wasd == 1:
+            if keys[ord('a')]:
+                move_cb('left', g1)
+            elif keys[ord('d')]:
+                move_cb('right', g1)
+            elif keys[ord('w')]:
+                move_cb('up', g1)
+            elif keys[ord('s')]:
+                move_cb('down', g1)
 
         if check_win():
             end = time.time()
-            not_won = False
+            won = True
 
     # Clear the screen
     screen.fill(color=(30, 30, 30))
@@ -107,6 +124,10 @@ while running:
     # Update the display
     group.update(events)
     group.draw(screen)
+
+    if won:
+        draw_game_over_screen(end - start)
+
     pygame.display.update()
 
 # Quit Pygame
