@@ -48,7 +48,7 @@ solution_grid = s1.grid
 
 def draw_game_over_screen(time_elapsed):
    screen.fill((30, 30, 30))
-   win_string = 'Game over, time to solve: ' + str(time_elapsed)
+   win_string = 'Game over, Player ' + str(winner) + ' wins! \n Time to solve: ' + str(time_elapsed)
    font = pygame.font.SysFont('Oxygen-Regular.ttf', 80)
    title = font.render(win_string, True, (255, 255, 255))
    restart_button = font.render('R - Restart', True, (255, 255, 255))
@@ -58,17 +58,37 @@ def draw_game_over_screen(time_elapsed):
    screen.blit(quit_button, (WIDTH/2 - quit_button.get_width()/2, HEIGHT/2 + quit_button.get_height()/2))
    pygame.display.update()
 
-def check_win():
-    middle_grid = [row[1:4] for row in g1.grid[1:4]]
-    for i in range(len(solution_grid)):
-        for j in range(len(solution_grid[i])):
-            if middle_grid[i][j] is None:
-                return False
-            elif not (middle_grid[i][j].colour == solution_grid[i][j].colour):
-                return False
-    print("you won!")
-    return True
+def string_representation(grid):
+    str_rep = [[0 for x in range(len(grid))] for y in range(len(grid))]
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if grid[i][j] is None:
+                return None
+            str_rep[i][j] = grid[i][j].colour
+    return str_rep
 
+winner = None
+def check_win():
+    global winner
+    middle_grid_p1 = string_representation([row[1:4] for row in g1.grid[1:4]])
+    middle_grid_p2 = string_representation([row[1:4] for row in g2.grid[1:4]])
+    solution = string_representation(solution_grid)
+
+    if middle_grid_p1 is not None and middle_grid_p1 == solution:
+        winner = 1
+        print("P1 wins!")
+        return True
+    if middle_grid_p2 is not None and middle_grid_p2 == solution:
+        print("P2 wins!")
+        winner = 2
+        return True
+
+    return False
+
+global start
+global end
+start = None
+end = None
 
 # Main loop
 running = True
@@ -79,7 +99,8 @@ while running:
     # Check for events
     for event in events:
         if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
-            start = time.time()
+            if start is None:
+                start = time.time()
         if event.type == pygame.QUIT:
             running = False
 
@@ -135,7 +156,8 @@ while running:
                     move_cb('down', g1)
 
         if check_win():
-            end = time.time()
+            if end is None:
+                end = time.time()
             won = True
 
     # Clear the screen
