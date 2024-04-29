@@ -93,7 +93,7 @@ while running:
         num_pressed_arrows = [keys[i] for i in list_keys_arrows]
         num_pressed_arrows = len([i for i in num_pressed_arrows if i != False])
         print(num_pressed_wasd)
-
+        '''
         if event.type == pygame.KEYDOWN and num_pressed_arrows == 1:
             if keys[pygame.K_LEFT]:
                 move_cb('left', g2)
@@ -113,6 +113,26 @@ while running:
                 move_cb('up', g1)
             elif keys[ord('s')]:
                 move_cb('down', g1)
+        '''
+        if event.type == pygame.KEYDOWN:
+            if num_pressed_arrows ==1:
+                if event.key == pygame.K_LEFT:
+                    move_cb('left', g2)
+                elif event.key == pygame.K_RIGHT:
+                    move_cb('right', g2)
+                elif event.key == pygame.K_UP:
+                    move_cb('up', g2)
+                elif event.key == pygame.K_DOWN:
+                    move_cb('down', g2)
+            if num_pressed_wasd ==1:
+                if event.key == ord('a'):
+                    move_cb('left', g1)
+                elif event.key == ord('d'):
+                    move_cb('right', g1)
+                elif event.key == ord('w'):
+                    move_cb('up', g1)
+                elif event.key == ord('s'):
+                    move_cb('down', g1)
 
         if check_win():
             end = time.time()
