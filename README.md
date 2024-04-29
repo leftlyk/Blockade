@@ -1,0 +1,1 @@
+Blockade is a simple two-player game where players compete to arrange a series of coloured blocks as per a blueprint of a 3x3 grid. 
